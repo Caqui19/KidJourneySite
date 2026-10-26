@@ -1,51 +1,177 @@
-import { useState } from "react";
-import { Link, Route, Routes } from "react-router";
+import { useEffect, useState } from "react";
+import { Link, NavLink, Navigate, Route, Routes, useLocation } from "react-router";
+import { observarUsuario } from "./auth";
 import "./App.css";
+import "./components/Header.css";
+import "./components/Footer.css";
 
 import Home from "./pages/Home";
-import Cadastro from "./pages/Cadastro";
-import Login from "./pages/Login";
+import Forum from "./pages/Forum";
 import Parceiros from "./pages/Parceiros";
+import EntrarParceiro from "./pages/EntrarParceiro";
+import PoliticaSeguranca from "./pages/PoliticaSeguranca";
+import RedefinirSenha from "./pages/RedefinirSenha";
+
+function classeAtiva({ isActive }) {
+  return isActive ? "active" : "";
+}
+
+function LinksDoMenu({ aoClicar, mostrarPolitica = false }) {
+  return (
+    <ul>
+      <li>
+        <NavLink to="/" end onClick={aoClicar} className={classeAtiva}>
+          Início
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="/parceiros" onClick={aoClicar} className={classeAtiva}>
+          Parceiros
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="/forum" onClick={aoClicar} className={classeAtiva}>
+          Fórum
+        </NavLink>
+      </li>
+      {mostrarPolitica && (
+        <li>
+          <NavLink to="/politica-de-seguranca" className={classeAtiva}>
+            Política de Segurança
+          </NavLink>
+        </li>
+      )}
+    </ul>
+  );
+}
 
 function App() {
   const [menuAberto, setMenuAberto] = useState(false);
+  const fecharMenu = () => setMenuAberto(false);
+  const estaNoForum = useLocation().pathname === "/forum";
+  const [usuario, setUsuario] = useState(null);
+  const [verificandoUsuario, setVerificandoUsuario] = useState(true);
+  const esconderCabecalho = estaNoForum && !verificandoUsuario && !!usuario;
+
+  useEffect(() => {
+    setVerificandoUsuario(true);
+    return observarUsuario((usuarioAtual) => {
+      setUsuario(usuarioAtual);
+      setVerificandoUsuario(false);
+    }, estaNoForum ? "cliente" : null);
+  }, [estaNoForum]);
 
   return (
-    <div>
-      <header className="header">
-        <Link to="/" className="logo" onClick={() => setMenuAberto(false)}>
-          <img src="/logo.svg" alt="KidJourney" />
-        </Link>
+    <>
+      {!esconderCabecalho && (
+        <header>
+          <Link to="/">
+            <img src="/logo.svg" alt="Logo do KidJourney" />
+          </Link>
 
-        <button
-          className="menu-botao"
-          type="button"
-          aria-label={menuAberto ? "Fechar menu" : "Abrir menu"}
-          aria-expanded={menuAberto}
-          onClick={() => setMenuAberto(!menuAberto)}
-        >
-          ☰
-        </button>
+          <nav>
+            <LinksDoMenu />
+          </nav>
 
-        <nav className={menuAberto ? "menu aberto" : "menu"}>
-          <Link to="/" onClick={() => setMenuAberto(false)}>Início</Link>
-          <Link to="/cadastro" onClick={() => setMenuAberto(false)}>Cadastro</Link>
-          <Link to="/login" onClick={() => setMenuAberto(false)}>Entrar</Link>
-        </nav>
-      </header>
+          <button
+            id="hamburguer"
+            type="button"
+            onClick={() => setMenuAberto(true)}
+          >
+            <i className="fa-solid fa-bars"></i>
+          </button>
+        </header>
+      )}
+      {!esconderCabecalho && menuAberto && (
+        <div id="menu">
+          <div>
+            <Link to="/" onClick={fecharMenu}>
+              <img src="/logo.svg" alt="Logo do KidJourney" />
+            </Link>
+            <button id="fechar-menu" type="button" onClick={fecharMenu}>
+              <i className="fa-solid fa-xmark"></i>
+            </button>
+          </div>
 
-      <main>
+          <hr />
+
+          <nav>
+            <LinksDoMenu aoClicar={fecharMenu} />
+          </nav>
+        </div>
+      )}
+
+      <main className={esconderCabecalho ? "sem-header" : ""}>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/cadastro" element={<Cadastro />} />
-          <Route path="/login" element={<Login />} />
           <Route path="/parceiros" element={<Parceiros />} />
+          <Route path="/parceiros/entrar" element={<EntrarParceiro />} />
+          <Route
+            path="/fale-conosco"
+            element={<Navigate to="/parceiros" replace />}
+          />
+          <Route
+            path="/cadastro"
+            element={<Navigate to="/parceiros" replace />}
+          />
+          <Route
+            path="/politica-de-seguranca"
+            element={<PoliticaSeguranca />}
+          />
+          <Route path="/forum" element={<Forum />} />
+          <Route path="/redefinir-senha" element={<RedefinirSenha />} />
         </Routes>
       </main>
-    </div>
+
+      <footer>
+        <div>
+          <Link to="/">
+            <img src="/logo.svg" alt="Logo do KidJourney" />
+          </Link>
+          <p>Mais confiança para cuidar, mais saúde para crescer.</p>
+
+          <ul>
+            <li>
+              <a
+                href="https://www.instagram.com/kid_journey7/"
+                target="_blank"
+                rel="noreferrer"
+                title="@kid_journey7"
+              >
+                <i className="fa-brands fa-instagram"></i>
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://www.linkedin.com/in/kid-journey-7784bb42b/"
+                target="_blank"
+                rel="noreferrer"
+                title="Kid Journey"
+              >
+                <i className="fa-brands fa-linkedin"></i>
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://www.youtube.com/channel/UC4-t3PTB4bUpeRWDEZHvk7Q"
+                target="_blank"
+                rel="noreferrer"
+                title="@KidJourney7"
+              >
+                <i className="fa-brands fa-youtube"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <hr id="footerHr" />
+
+        <nav>
+          <LinksDoMenu mostrarPolitica />
+        </nav>
+      </footer>
+    </>
   );
 }
 
 export default App;
-
-

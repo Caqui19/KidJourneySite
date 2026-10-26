@@ -1,0 +1,119 @@
+.politica-page {
+  width: 100%;
+  padding: 55px 24px 70px;
+  background: var(--bg-color);
+}
+
+.politica-conteudo {
+  width: min(760px, 100%);
+  margin: 0 auto;
+}
+
+.politica-etiqueta {
+  color: var(--primary-color);
+  font-size: var(--regular-size);
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.politica-conteudo h1,
+.politica-conteudo h2 {
+  color: var(--primary-color);
+  font-family: "Nunito", sans-serif;
+}
+
+.politica-conteudo h1 {
+  margin: 8px 0 14px;
+  font-size: var(--policy-title-size);
+}
+
+.politica-conteudo h2 {
+  margin-bottom: 8px;
+  font-size: var(--titanic-size);
+}
+
+.politica-introducao {
+  max-width: 650px;
+  color: var(--text-color);
+  font-size: var(--big-size);
+  line-height: 1.6;
+}
+
+.politica-aviso {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0;
+  padding: 10px 14px;
+  border: 1px solid #e3ead8;
+  border-left: 4px solid var(--primary-color);
+  border-radius: 10px;
+  background: #f6faed;
+  color: var(--primary-color);
+  font-size: var(--regular-size);
+  font-weight: 600;
+}
+
+.politica-aviso::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--primary-color);
+}
+
+.politica-conteudo section {
+  min-width: 0;
+  margin-top: 20px;
+  padding: 18px;
+  border: 1px solid #e3ead8;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.politica-conteudo section p {
+  margin-top: 8px;
+  color: var(--text-color);
+  font-size: var(--big-size);
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.politica-conteudo section a {
+  display: inline-block;
+  margin-top: 8px;
+  color: var(--primary-color);
+  font-size: var(--regular-size);
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.politica-conteudo section p a {
+  display: inline;
+  margin: 0;
+}
+
+.politica-data {
+  margin-top: 20px;
+  color: var(--text-color);
+  font-size: var(--regular-size);
+}
+
+.divisor-links {
+  margin-inline: 10px;
+  color: var(--primary-color);
+}
+
+@media (max-width: 560px) {
+  .politica-page {
+    padding: 36px 16px 48px;
+  }
+
+  .politica-conteudo section {
+    padding: 16px;
+  }
+
+  .divisor-links {
+    display: none;
+  }
+}

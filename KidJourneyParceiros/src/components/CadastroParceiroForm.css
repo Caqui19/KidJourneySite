@@ -1,0 +1,98 @@
+#cadastro-parceiro-form {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  width: 100%;
+  max-width: 460px;
+  gap: 10px;
+}
+
+#cadastro-parceiro-form .inputContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+#cadastro-parceiro-form label {
+  color: var(--primary-color);
+  font-size: var(--regular-size);
+}
+
+#cadastro-parceiro-form input:not([type="checkbox"]),
+#cadastro-parceiro-form select,
+#cadastro-parceiro-form textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--bg-color);
+  color: var(--title-color);
+  font: inherit;
+  font-size: var(--regular-size);
+}
+
+#cadastro-parceiro-form input[type="file"] {
+  padding: 8px;
+  font-size: var(--regular-size);
+}
+
+#cadastro-parceiro-form textarea {
+  resize: vertical;
+}
+
+#cadastro-parceiro-form small {
+  color: var(--text-color);
+  font-size: var(--little-size);
+  line-height: 1.5;
+}
+
+#cadastro-parceiro-form .termos-parceiro {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+#cadastro-parceiro-form .termos-parceiro label {
+  line-height: 1.5;
+  cursor: pointer;
+}
+
+#cadastro-parceiro-form .termos-parceiro a {
+  color: var(--primary-color);
+  font-size: var(--regular-size);
+}
+
+#cadastro-parceiro-form input[type="checkbox"] {
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+}
+
+#cadastro-parceiro-form .submit {
+  padding: 10px;
+  border: 1px solid var(--primary-color);
+  border-radius: 50px;
+  background: var(--secondary-color);
+  color: var(--primary-color);
+  font-size: var(--regular-size);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+#cadastro-parceiro-form .submit:hover {
+  filter: brightness(95%);
+}
+
+
+
+#cadastro-parceiro-form input:not([type="checkbox"]):focus,
+#cadastro-parceiro-form select:focus,
+#cadastro-parceiro-form textarea:focus {
+  border-color: var(--primary-color);
+  outline: 2px solid rgb(50 108 0 / 12%);
+}
+
+
