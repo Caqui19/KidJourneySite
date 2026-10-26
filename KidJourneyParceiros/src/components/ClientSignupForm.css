@@ -1,0 +1,109 @@
+#cliente-cadastro-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 400px;
+}
+
+#cliente-cadastro-form .inputContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+#cliente-cadastro-form label,
+#cliente-cadastro-form .termoContainer a {
+  color: var(--primary-color);
+  font-size: var(--regular-size);
+}
+
+#cliente-cadastro-form input:not([type="checkbox"]) {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--bg-color);
+  color: var(--title-color);
+  font-size: var(--regular-size);
+}
+
+#cliente-cadastro-form input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+}
+
+#cliente-cadastro-form .senha-campo {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+#cliente-cadastro-form .senha-campo input {
+  padding-right: 42px;
+}
+
+#cliente-cadastro-form .mostrar-senha {
+  position: absolute;
+  right: 10px;
+  border: 0;
+  background: none;
+  color: var(--primary-color);
+  cursor: pointer;
+  font-size: var(--biggest-size);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+#cliente-cadastro-form .termoContainer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+#cliente-cadastro-form .submit {
+  padding: 10px;
+  border: 1px solid var(--primary-color);
+  border-radius: 50px;
+  background: var(--secondary-color);
+  color: var(--primary-color);
+  font-size: var(--regular-size);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+#cliente-cadastro-form .submit:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+#cliente-cadastro-form .cadastroMensagem {
+  margin: 0;
+  padding: 12px;
+  border: 1px solid var(--secondary-color);
+  border-radius: 8px;
+  background: #f1f7e8;
+  color: var(--primary-color);
+  font-size: var(--regular-size);
+}
+
+#cliente-cadastro-form .cadastroMensagem[data-tipo="erro"] {
+  border-color: #e0a2a2;
+  background: #fff1f1;
+  color: #9b1c1c;
+}
+
+#cliente-cadastro-form input:not([type="checkbox"]):focus {
+  border-color: var(--primary-color);
+  outline: 2px solid rgb(50 108 0 / 12%);
+}
+
+
+#cliente-cadastro-form .submit:hover {
+  filter: brightness(95%);
+}
+
