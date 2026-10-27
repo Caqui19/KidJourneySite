@@ -37,12 +37,16 @@ function Forum() {
         "auth/invalid-credential": "E-mail ou senha incorretos.",
         "auth/wrong-password": "E-mail ou senha incorretos.",
         "auth/user-not-found": "Não existe uma conta com esse e-mail.",
-        "auth/role-not-allowed": "Esta conta não tem perfil de cliente para acessar o Fórum.",
-        "auth/too-many-requests": "Muitas tentativas. Tente novamente mais tarde.",
+        "auth/role-not-allowed":
+          "Esta conta não tem perfil de cliente para acessar o Fórum.",
+        "auth/too-many-requests":
+          "Muitas tentativas. Tente novamente mais tarde.",
       };
 
       setTipoMensagem("erro");
-      setMensagem(mensagens[erro.code] || "Não foi possível entrar na conta agora.");
+      setMensagem(
+        mensagens[erro.code] || "Não foi possível entrar na conta agora.",
+      );
     } finally {
       setCarregando(false);
     }
@@ -67,7 +71,9 @@ function Forum() {
     <section className="forum-page">
       <div className="forum-caixa">
         <span className="forum-icone" aria-hidden="true">
-          <i className={usuario ? "fa-solid fa-comments" : "fa-solid fa-lock"}></i>
+          <i
+            className={usuario ? "fa-solid fa-comments" : "fa-solid fa-lock"}
+          ></i>
         </span>
 
         {usuario ? (
@@ -84,15 +90,16 @@ function Forum() {
         ) : (
           <>
             <h1>Entre para acessar o fórum</h1>
-            <p>
-              É preciso fazer login na sua conta para entrar no fórum e
-              participar da comunidade de famílias que compartilham os
-              primeiros passos da jornada de cuidado.
-            </p>
+            <p>Faça login na sua conta para entrar no fórum.</p>
 
             <form className="forum-formulario" onSubmit={fazerLogin}>
               <div>
-                <label htmlFor="forum-email">E-mail <span className="campo-obrigatorio" aria-hidden="true">*</span></label>
+                <label htmlFor="forum-email">
+                  E-mail{" "}
+                  <span className="campo-obrigatorio" aria-hidden="true">
+                    *
+                  </span>
+                </label>
                 <input
                   id="forum-email"
                   type="email"
@@ -105,7 +112,12 @@ function Forum() {
               </div>
 
               <div>
-                <label htmlFor="forum-senha">Senha <span className="campo-obrigatorio" aria-hidden="true">*</span></label>
+                <label htmlFor="forum-senha">
+                  Senha{" "}
+                  <span className="campo-obrigatorio" aria-hidden="true">
+                    *
+                  </span>
+                </label>
                 <div className="forum-senha-campo">
                   <input
                     id="forum-senha"
@@ -120,7 +132,9 @@ function Forum() {
                     className="forum-mostrar-senha"
                     type="button"
                     onClick={() => setSenhaVisivel(!senhaVisivel)}
-                    aria-label={senhaVisivel ? "Ocultar senha" : "Mostrar senha"}
+                    aria-label={
+                      senhaVisivel ? "Ocultar senha" : "Mostrar senha"
+                    }
                     title={senhaVisivel ? "Ocultar senha" : "Mostrar senha"}
                   >
                     <span className="material-icons">
@@ -144,13 +158,18 @@ function Forum() {
                 </p>
               )}
 
-              <button className="forum-botao" type="submit" disabled={carregando}>
+              <button
+                className="forum-botao"
+                type="submit"
+                disabled={carregando}
+              >
                 {carregando ? "Entrando..." : "Entrar"}
               </button>
             </form>
 
             <p className="forum-cadastro">
-              Ainda não tem uma conta? <Link to="/#titulo-cadastro">Cadastre-se</Link>
+              Ainda não tem uma conta?{" "}
+              <Link to="/#cadastro">Cadastre-se</Link>
             </p>
           </>
         )}
@@ -160,5 +179,3 @@ function Forum() {
 }
 
 export default Forum;
-
-

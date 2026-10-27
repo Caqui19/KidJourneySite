@@ -10,11 +10,11 @@ function Home() {
         <div className="home-hero-copy">
           <h1>Mais confiança para cuidar, mais saúde para crescer.</h1>
           <p className="home-hero-descricao">
-            Acompanhe a alimentação, a saúde e o desenvolvimento da sua criança
-            desde os primeiros passos, com orientação e apoio em cada etapa.
+            Apoio para cuidar da saúde e da alimentação da sua criança, com
+            orientações adequadas à etapa e às necessidades dela.
           </p>
           <div className="home-hero-acoes">
-            <a className="home-hero-botao" href="#titulo-cadastro">
+            <a className="home-hero-botao" href="#cadastro">
               Começar agora
             </a>
             <a className="home-hero-link" href="#app">
@@ -129,47 +129,35 @@ function Home() {
               <img src="/alvaro.jpg" alt="Alvaro Takeshi" />
               <h3>Alvaro Takeshi</h3>
             </div>
-            <p>Ajuda com o design técnico e a organização do projeto.</p>
+            <p>Design técnico, organização e correção de problemas.</p>
           </article>
           <article>
             <div>
               <img src="/andre.jpg" alt="André Luís" />
               <h3>André Luís</h3>
             </div>
-            <p>
-              Contribui com o design, a documentação, as ideias e a divulgação
-              do projeto.
-            </p>
+            <p>Cofundador e idealizador; design, comunicação e coleta de dados.</p>
           </article>
           <article>
             <div>
               <img src="/denis.jpg" alt="Denis de Lucas" />
               <h3>Denis de Lucas</h3>
             </div>
-            <p>
-              Idealizou o projeto e atuou no design, pesquisa de campo e análise
-              de dados.
-            </p>
+            <p>Idealizador; design, arquivo, pesquisa de campo e análise de dados.</p>
           </article>
           <article>
             <div>
               <img src="/isaac.jpg" alt="Isaac Oliveira" />
               <h3>Isaac Oliveira</h3>
             </div>
-            <p>
-              Cuida do desenvolvimento e da organização da parte técnica do
-              aplicativo.
-            </p>
+            <p>Desenvolve, organiza e ajusta a parte técnica do app.</p>
           </article>
           <article>
             <div>
               <img src="/joao.jpg" alt="João Vitor" />
               <h3>João Vitor</h3>
             </div>
-            <p>
-              Contribui com o design, a documentação, as ideias e a divulgação
-              do projeto.
-            </p>
+            <p>Design, documentação, ideias, divulgação e coleta por formulário.</p>
           </article>
           <hr />
         </div>
@@ -190,8 +178,20 @@ function Home() {
               para criar hábitos saudáveis.
             </p>
             <div className="appLojas">
-              <img src="/google.svg" alt="Google Play" />
-              <img src="/apple.svg" alt="App Store" />
+              <a
+                href="https://play.google.com/store"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <img src="/google.svg" alt="Google Play" />
+              </a>
+              <a
+                href="https://www.apple.com/br/app-store/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <img src="/apple.svg" alt="App Store" />
+              </a>
             </div>
           </div>
           <img
@@ -223,13 +223,12 @@ function Home() {
           <hr />
         </div>
 
-        <h2 className="subtitulo" id="titulo-cadastro">
+        <h2 className="subtitulo" id="cadastro">
           Comece a cuidar da alimentação e do bem-estar do seu filho.
         </h2>
         <div className="cadastroContainer">
           <p>
-            Crie sua conta para receber conteúdos e recomendações que apoiam os
-            primeiros passos do cuidado.
+            Crie sua conta para receber orientações adequadas à sua criança.
           </p>
           <ClientSignupForm />
         </div>

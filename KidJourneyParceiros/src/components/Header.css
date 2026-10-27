@@ -34,6 +34,7 @@ header nav ul li a {
 header nav ul li a.active,
 #menu nav ul li a.active {
   background: var(--secondary-color);
+  pointer-events: none;
 }
 
 #hamburguer {

@@ -64,6 +64,7 @@ footer nav ul li a {
 
 footer nav ul li a.active {
   background: var(--bg-color);
+  pointer-events: none;
 }
 
 @media (max-width: 900px) {

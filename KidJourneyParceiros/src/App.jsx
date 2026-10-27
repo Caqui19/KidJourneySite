@@ -1,6 +1,14 @@
 import { useEffect, useState } from "react";
-import { Link, NavLink, Navigate, Route, Routes, useLocation } from "react-router";
-import { observarUsuario } from "./auth";
+import {
+  Link,
+  NavLink,
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from "react-router";
+import { observarUsuario, validarPerfil } from "./auth";
 import "./App.css";
 import "./components/Header.css";
 import "./components/Footer.css";
@@ -16,7 +24,36 @@ function classeAtiva({ isActive }) {
   return isActive ? "active" : "";
 }
 
-function LinksDoMenu({ aoClicar, mostrarPolitica = false }) {
+function LinksDoMenu({ aoClicar, mostrarPolitica = false, usuario }) {
+  const navegar = useNavigate();
+
+  async function abrirParceiros(evento) {
+    if (
+      evento.button !== 0 ||
+      evento.metaKey ||
+      evento.ctrlKey ||
+      evento.shiftKey ||
+      evento.altKey
+    ) {
+      return;
+    }
+
+    evento.preventDefault();
+    aoClicar?.();
+
+    if (!usuario) {
+      navegar("/parceiros");
+      return;
+    }
+
+    try {
+      await validarPerfil(usuario, "parceiro");
+      navegar("/parceiros/entrar");
+    } catch {
+      navegar("/parceiros");
+    }
+  }
+
   return (
     <ul>
       <li>
@@ -25,7 +62,11 @@ function LinksDoMenu({ aoClicar, mostrarPolitica = false }) {
         </NavLink>
       </li>
       <li>
-        <NavLink to="/parceiros" onClick={aoClicar} className={classeAtiva}>
+        <NavLink
+          to="/parceiros"
+          onClick={abrirParceiros}
+          className={classeAtiva}
+        >
           Parceiros
         </NavLink>
       </li>
@@ -70,7 +111,7 @@ function App() {
           </Link>
 
           <nav>
-            <LinksDoMenu />
+            <LinksDoMenu usuario={usuario} />
           </nav>
 
           <button
@@ -96,7 +137,7 @@ function App() {
           <hr />
 
           <nav>
-            <LinksDoMenu aoClicar={fecharMenu} />
+            <LinksDoMenu aoClicar={fecharMenu} usuario={usuario} />
           </nav>
         </div>
       )}
@@ -167,7 +208,7 @@ function App() {
         <hr id="footerHr" />
 
         <nav>
-          <LinksDoMenu mostrarPolitica />
+          <LinksDoMenu mostrarPolitica usuario={usuario} />
         </nav>
       </footer>
     </>
