@@ -176,6 +176,7 @@ function EntrarParceiro() {
             </form>
           </>
         )}
+
       </div>
     </section>
   );
