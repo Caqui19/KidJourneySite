@@ -7,48 +7,90 @@ function Home() {
   return (
     <>
       <section className="home-hero">
-        <h1>Mais confiança para cuidar, mais saúde para crescer.</h1>
-        <img src="/logo.svg" alt="Logo do KidJourney" />
+        <div className="home-hero-copy">
+          <h1>Mais confiança para cuidar, mais saúde para crescer.</h1>
+          <p className="home-hero-descricao">
+            Acompanhe a alimentação, a saúde e o desenvolvimento da sua criança
+            desde os primeiros passos, com orientação e apoio em cada etapa.
+          </p>
+          <div className="home-hero-acoes">
+            <a className="home-hero-botao" href="#titulo-cadastro">
+              Começar agora
+            </a>
+            <a className="home-hero-link" href="#app">
+              Conheça o aplicativo <i className="fa-solid fa-arrow-down"></i>
+            </a>
+          </div>
+        </div>
+
+        <div className="home-hero-visual">
+          <img src="/logo.svg" alt="Logo do KidJourney" />
+        </div>
       </section>
 
+      <hr />
+
       <section className="site-content">
-        <img className="logoMain" src="/logo.svg" alt="Logo do KidJourney" />
+        <div className="home-section-heading">
+          <p className="home-etiqueta">NOSSO PROPÓSITO</p>
+          <h2 className="subtitulo">
+            Orientação e acolhimento para os primeiros passos
+          </h2>
+          <p>
+            Conheça os princípios que guiam o KidJourney e apoiam as famílias no
+            início dessa jornada.
+          </p>
+        </div>
 
         <div className="mvvContainer">
           <div>
             <article>
-              <h3>Missão</h3>
+              <div className="mvv-card-topo">
+                <span>
+                  <i className="fa-solid fa-bullseye"></i>
+                </span>
+                <h3>Missão</h3>
+              </div>
               <p>
                 Ajudar pais e mães de primeira viagem a promoverem uma
                 alimentação saudável e um desenvolvimento infantil adequado por
                 meio de acompanhamento personalizado e orientação confiável para
-                cada fase da criança.
+                os primeiros passos de cada criança.
               </p>
             </article>
             <article>
-              <h3>Visão</h3>
+              <div className="mvv-card-topo">
+                <span>
+                  <i className="fa-solid fa-eye"></i>
+                </span>
+                <h3>Visão</h3>
+              </div>
               <p>
                 Ser a principal plataforma digital de acompanhamento infantil
-                personalizado da América Latina, transformando a forma como
-                famílias cuidam da saúde, nutrição e desenvolvimento de suas
-                crianças desde os primeiros anos de vida.
+                personalizado da América Latina, apoiando as famílias no começo
+                da jornada de saúde, nutrição e desenvolvimento infantil.
               </p>
             </article>
           </div>
 
           <article>
-            <h3>Valores</h3>
+            <div className="mvv-card-topo">
+              <span>
+                <i className="fa-solid fa-heart"></i>
+              </span>
+              <h3>Valores</h3>
+            </div>
             <ol>
               <li>
                 <p>
-                  Cuidado humanizado: o bem-estar das crianças e das famílias
-                  vem primeiro.
+                  Cuidado humanizado: o bem-estar das crianças e de suas
+                  famílias vem primeiro.
                 </p>
               </li>
               <li>
                 <p>
                   Personalização: cada criança é única e precisa de atenção
-                  adequada à sua fase.
+                  adequada em cada etapa da jornada.
                 </p>
               </li>
               <li>
@@ -65,7 +107,7 @@ function Home() {
               <li>
                 <p>
                   Desenvolvimento saudável: incentivamos bons hábitos desde os
-                  primeiros anos.
+                  primeiros passos.
                 </p>
               </li>
               <li>
@@ -76,7 +118,11 @@ function Home() {
           <hr />
         </div>
 
-        <h2 className="subtitulo">Conheça nossa liderança</h2>
+        <div className="home-section-heading">
+          <p className="home-etiqueta">NOSSO TIME</p>
+          <h2 className="subtitulo">Conheça nossa liderança</h2>
+          <p>As pessoas que trabalham para tirar o KidJourney do papel.</p>
+        </div>
         <div className="liderancaContainer">
           <article>
             <div>
@@ -128,17 +174,20 @@ function Home() {
           <hr />
         </div>
 
-        <h2 className="subtitulo" id="app">
-          Nosso aplicativo
-        </h2>
+        <div className="home-section-heading home-section-heading-app">
+          <p className="home-etiqueta" id="app">
+            NOSSO APP
+          </p>
+          <h2 className="subtitulo">Nosso aplicativo</h2>
+        </div>
         <div className="appContainer">
           <div>
             <p>
               Muitas famílias têm dificuldade em encontrar orientações
               confiáveis e personalizadas sobre alimentação e saúde infantil. O
               KidJourney oferece conteúdos e recomendações adaptados ao perfil e
-              à fase de cada criança, ajudando a promover hábitos saudáveis de
-              forma prática.
+              à etapa de cada criança, apoiando as famílias nos primeiros passos
+              para criar hábitos saudáveis.
             </p>
             <div className="appLojas">
               <img src="/google.svg" alt="Google Play" />
@@ -158,7 +207,8 @@ function Home() {
             <h2>Seu conhecimento pode fazer parte da jornada.</h2>
             <p>
               Nutricionistas, pediatras e outros profissionais podem
-              compartilhar recomendações e apresentar seu trabalho às famílias.
+              compartilhar recomendações e apresentar seu trabalho às famílias
+              no início da jornada de cuidado.
             </p>
           </div>
           <div className="parceiros-convite-destaque">
@@ -173,13 +223,13 @@ function Home() {
           <hr />
         </div>
 
-        <h2 className="subtitulo">
-          Comece hoje a cuidar da alimentação e do bem-estar do seu filho.
+        <h2 className="subtitulo" id="titulo-cadastro">
+          Comece a cuidar da alimentação e do bem-estar do seu filho.
         </h2>
         <div className="cadastroContainer">
           <p>
-            Crie sua conta para acompanhar conteúdos e recomendações no
-            aplicativo.
+            Crie sua conta para receber conteúdos e recomendações que apoiam os
+            primeiros passos do cuidado.
           </p>
           <ClientSignupForm />
         </div>
@@ -193,7 +243,8 @@ function Home() {
         <div className="forumContainer">
           <p>
             Acompanhe recomendações, compartilhe experiências e encontre apoio
-            durante a jornada de cuidado e desenvolvimento da sua criança.
+            nos primeiros passos da jornada de cuidado e desenvolvimento da sua
+            criança.
           </p>
           <a href="/forum">Entre no Fórum</a>
         </div>
@@ -215,11 +266,7 @@ function Home() {
             <h2>
               <i className="fa-solid fa-envelope"></i> Endereço de e-mail
             </h2>
-            <p>
-              <a href="mailto:kidjourneycontato@gmail.com">
-                kidjourneycontato@gmail.com
-              </a>
-            </p>
+            <p>kidjourneycontato@gmail.com</p>
           </div>
         </div>
 

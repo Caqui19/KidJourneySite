@@ -8,10 +8,11 @@ function Parceiros() {
       <div className="parceiros-layout">
         <div className="parceiros-apresentacao">
           <p className="parceiros-etiqueta">KIDJOURNEY PARA PROFISSIONAIS</p>
-          <h1>Seu conhecimento ajuda as famílias a crescer.</h1>
+          <h1>Seu conhecimento pode apoiar os primeiros passos.</h1>
           <p className="parceiros-descricao">
             Nutricionistas, pediatras e outros profissionais podem compartilhar
-            recomendações e apresentar seus produtos ou serviços no aplicativo.
+            recomendações e apresentar produtos ou serviços às famílias no
+            início da jornada de cuidado.
           </p>
 
           <div className="parceiros-beneficios">
@@ -19,14 +20,17 @@ function Parceiros() {
               <span>01</span>
               <div>
                 <h2>Compartilhe recomendações</h2>
-                <p>Publique conteúdos e orientações para apoiar as famílias.</p>
+                <p>
+                  Publique conteúdos e orientações para apoiar as famílias nos
+                  primeiros passos.
+                </p>
               </div>
             </article>
             <article>
               <span>02</span>
               <div>
                 <h2>Divulgue seu trabalho</h2>
-                <p>Apresente seus produtos e serviços dentro do app.</p>
+                <p>Apresente seu trabalho às famílias no início da jornada.</p>
               </div>
             </article>
             <article>

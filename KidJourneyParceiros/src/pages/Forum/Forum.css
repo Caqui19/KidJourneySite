@@ -5,16 +5,15 @@
   min-height: 520px;
   padding: 48px 20px;
   place-items: center;
-  background: #f6faed;
+  background: #fff;
 }
 
 .forum-caixa {
   width: min(100%, 480px);
   padding: 36px;
-  border: 1px solid #e3ead8;
-  border-radius: 20px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
   background: var(--bg-color);
-  box-shadow: 0 14px 40px rgb(50 108 0 / 8%);
   text-align: center;
 }
 
@@ -24,6 +23,7 @@
   height: 58px;
   margin: 0 auto 18px;
   place-items: center;
+  border: 1px solid var(--primary-color);
   border-radius: 50%;
   background: var(--secondary-color);
   color: var(--primary-color);
@@ -72,8 +72,8 @@
 .forum-formulario input {
   width: 100%;
   padding: 10px;
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
+  border: 1px solid var(--primary-color);
+  border-radius: 9px;
   background: var(--bg-color);
   color: var(--title-color);
   font-size: var(--regular-size);
@@ -121,7 +121,6 @@
 
 .forum-cadastro a {
   color: var(--primary-color);
-  font-weight: 700;
 }
 
 @media (max-width: 560px) {

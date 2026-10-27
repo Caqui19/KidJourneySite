@@ -66,18 +66,8 @@ function CadastroParceiroForm() {
           type="email"
           id="parceiro-email"
           name="email"
-          placeholder="Seu e-mail profissional"
+          placeholder="Endereço de e-mail"
           required
-        />
-      </div>
-
-      <div className="inputContainer">
-        <label htmlFor="parceiro-whatsapp">WhatsApp</label>
-        <input
-          type="tel"
-          id="parceiro-whatsapp"
-          name="whatsapp"
-          placeholder="(00) 00000-0000"
         />
       </div>
 

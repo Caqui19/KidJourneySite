@@ -49,15 +49,15 @@ function App() {
   const [menuAberto, setMenuAberto] = useState(false);
   const fecharMenu = () => setMenuAberto(false);
   const estaNoForum = useLocation().pathname === "/forum";
-  const [usuario, setUsuario] = useState(null);
-  const [verificandoUsuario, setVerificandoUsuario] = useState(true);
+  const [estadoSessao, setEstadoSessao] = useState(null);
+  const sessaoVerificada = estadoSessao?.estaNoForum === estaNoForum;
+  const usuario = sessaoVerificada ? estadoSessao.usuario : null;
+  const verificandoUsuario = estaNoForum && !sessaoVerificada;
   const esconderCabecalho = estaNoForum && !verificandoUsuario && !!usuario;
 
   useEffect(() => {
-    setVerificandoUsuario(true);
     return observarUsuario((usuarioAtual) => {
-      setUsuario(usuarioAtual);
-      setVerificandoUsuario(false);
+      setEstadoSessao({ estaNoForum, usuario: usuarioAtual });
     }, estaNoForum ? "cliente" : null);
   }, [estaNoForum]);
 

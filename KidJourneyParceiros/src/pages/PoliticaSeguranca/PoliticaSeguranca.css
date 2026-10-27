@@ -45,10 +45,9 @@
   gap: 10px;
   margin: 20px 0;
   padding: 10px 14px;
-  border: 1px solid #e3ead8;
-  border-left: 4px solid var(--primary-color);
-  border-radius: 10px;
-  background: #f6faed;
+  border: 1px solid var(--primary-color);
+  border-radius: 9px;
+  background: #f3f7e8;
   color: var(--primary-color);
   font-size: var(--regular-size);
   font-weight: 600;
@@ -66,8 +65,8 @@
   min-width: 0;
   margin-top: 20px;
   padding: 18px;
-  border: 1px solid #e3ead8;
-  border-radius: 12px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
   background: #fff;
 }
 
@@ -91,6 +90,10 @@
 .politica-conteudo section p a {
   display: inline;
   margin: 0;
+}
+
+.politica-email {
+  color: var(--primary-color);
 }
 
 .politica-data {

@@ -59,6 +59,7 @@ export async function cadastrarUsuario({ nome, email, senha, politicaAceita }) {
       nome: nome.trim(),
       email: usuario.email,
       perfil: "cliente",
+      aprovado: false,
       politicaSegurancaAceita: politicaAceita,
       aceitoEm: serverTimestamp(),
     });
@@ -66,6 +67,8 @@ export async function cadastrarUsuario({ nome, email, senha, politicaAceita }) {
     await apagarConta(usuario);
     throw erro;
   }
+
+  await signOut(auth);
 
   return usuario;
 }
@@ -75,19 +78,22 @@ export async function validarPerfil(usuario, perfilEsperado) {
   const perfilSalvo = await getDoc(referenciaPerfil);
   const dados = perfilSalvo.data();
 
-  if (
-    perfilEsperado === "cliente" &&
-    (!perfilSalvo.exists() || !dados?.perfil)
-  ) {
+  if (perfilEsperado === "cliente" && (!perfilSalvo.exists() || !dados?.perfil)) {
     await setDoc(
       referenciaPerfil,
       {
         nome: usuario.displayName || "",
         email: usuario.email,
         perfil: "cliente",
+        aprovado: false,
       },
       { merge: true },
     );
+    return usuario;
+  }
+
+  if (perfilEsperado === "cliente" && dados.perfil === "cliente" && dados.aprovado !== false) {
+    await setDoc(referenciaPerfil, { aprovado: false }, { merge: true });
     return usuario;
   }
 

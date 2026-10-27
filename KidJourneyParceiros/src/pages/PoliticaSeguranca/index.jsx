@@ -42,10 +42,7 @@ function PoliticaSeguranca() {
           <h2>Contato</h2>
           <p>
             Para dúvidas ou solicitações sobre seus dados, envie um e-mail para{" "}
-            <a href="mailto:kidjourneycontato@gmail.com">
-              kidjourneycontato@gmail.com
-            </a>
-            .
+            <span className="politica-email">kidjourneycontato@gmail.com</span>.
           </p>
         </section>
 

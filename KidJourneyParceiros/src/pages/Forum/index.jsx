@@ -86,7 +86,8 @@ function Forum() {
             <h1>Entre para acessar o fórum</h1>
             <p>
               É preciso fazer login na sua conta para entrar no fórum e
-              participar da nossa comunidade.
+              participar da comunidade de famílias que compartilham os
+              primeiros passos da jornada de cuidado.
             </p>
 
             <form className="forum-formulario" onSubmit={fazerLogin}>
@@ -149,7 +150,7 @@ function Forum() {
             </form>
 
             <p className="forum-cadastro">
-              Ainda não tem uma conta? <Link to="/#cliente-cadastro-form">Cadastre-se</Link>
+              Ainda não tem uma conta? <Link to="/#titulo-cadastro">Cadastre-se</Link>
             </p>
           </>
         )}

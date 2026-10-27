@@ -29,18 +29,11 @@ header nav ul li a {
   font-size: var(--big-size);
   padding: 3px 10px;
   border-radius: 50px;
-  transition: background 0.2s ease;
 }
 
-header nav ul li a:hover,
 header nav ul li a.active,
 #menu nav ul li a.active {
   background: var(--secondary-color);
-}
-
-header nav ul li a.active,
-#menu nav ul li a.active {
-  font-weight: 600;
 }
 
 #hamburguer {
@@ -121,11 +114,6 @@ header nav ul li a.active,
   font-size: var(--bigger-size);
   padding: 3px 10px;
   border-radius: 50px;
-  transition: background 0.2s ease;
-}
-
-#menu nav ul li a:hover {
-  background: var(--secondary-color);
 }
 
 @media (max-width: 900px) {

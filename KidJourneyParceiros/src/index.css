@@ -23,6 +23,11 @@ hr {
 
 a {
   color: var(--primary-color);
+  font-weight: 400;
+}
+
+a:hover {
+  filter: brightness(80%);
 }
 
 :root {
@@ -55,9 +60,6 @@ a {
   font-weight: 700;
 }
 
-button:not(:disabled):hover,
-.site-content .parceiros-convite-botao:hover,
-.site-content .forumContainer a:hover,
-footer > div ul li a:hover {
+button:not(:disabled):hover {
   filter: brightness(95%);
 }

@@ -16,7 +16,8 @@ function EntrarParceiro() {
     return observarUsuario((usuarioAtual, erro) => {
       setUsuario(usuarioAtual);
       setVerificando(false);
-      if (erro) setMensagem("Esta conta não está cadastrada como parceira aprovada.");
+      if (erro)
+        setMensagem("Esta conta não está cadastrada como parceira aprovada.");
     }, "parceiro");
   }, []);
 
@@ -33,7 +34,8 @@ function EntrarParceiro() {
         "auth/invalid-credential": "E-mail ou senha incorretos.",
         "auth/wrong-password": "E-mail ou senha incorretos.",
         "auth/user-not-found": "Não encontramos uma conta com esse e-mail.",
-        "auth/role-not-allowed": "Esta conta não está cadastrada como parceira aprovada.",
+        "auth/role-not-allowed":
+          "Esta conta não está cadastrada como parceira aprovada.",
         "auth/too-many-requests":
           "Muitas tentativas. Tente novamente mais tarde.",
       };
@@ -174,14 +176,9 @@ function EntrarParceiro() {
             </form>
           </>
         )}
-
-        <Link className="entrar-parceiro-voltar" to="/parceiros">
-          Voltar para Parceiros
-        </Link>
       </div>
     </section>
   );
 }
 
 export default EntrarParceiro;
-

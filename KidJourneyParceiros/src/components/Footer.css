@@ -38,10 +38,6 @@ footer > div ul li a {
   font-size: var(--biggest-size);
 }
 
-footer > div ul li a:hover {
-  filter: brightness(95%);
-}
-
 #footerHr {
   width: 100%;
   height: 1px;
@@ -66,13 +62,8 @@ footer nav ul li a {
   text-decoration: none;
 }
 
-footer nav ul li a:hover,
 footer nav ul li a.active {
   background: var(--bg-color);
-}
-
-footer nav ul li a.active {
-  font-weight: 600;
 }
 
 @media (max-width: 900px) {
