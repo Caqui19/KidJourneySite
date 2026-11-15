@@ -14,6 +14,14 @@
   gap: 4px;
 }
 
+#cadastro-parceiro-form .campo-anti-spam {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
 #cadastro-parceiro-form label {
   color: var(--primary-color);
   font-size: var(--regular-size);
@@ -45,6 +53,10 @@
   color: var(--text-color);
   font-size: var(--little-size);
   line-height: 1.5;
+}
+
+#cadastro-parceiro-form .erro-documentos {
+  color: #a12622;
 }
 
 #cadastro-parceiro-form .termos-parceiro {

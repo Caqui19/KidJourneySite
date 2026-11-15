@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { entrarUsuario, observarUsuario, sairUsuario } from "../../auth";
+import PainelParceiro from "../PainelParceiro";
 import "./EntrarParceiro.css";
 
 function EntrarParceiro() {
@@ -63,120 +64,101 @@ function EntrarParceiro() {
     );
   }
 
+  if (usuario) {
+    return (
+      <PainelParceiro usuario={usuario} aoSair={sair} />
+    );
+  }
+
   return (
     <section className="entrar-parceiro-page">
       <div className="entrar-parceiro-caixa">
         <span className="entrar-parceiro-icone" aria-hidden="true">
-          <i
-            className={usuario ? "fa-solid fa-user-check" : "fa-solid fa-lock"}
-          ></i>
+          <i className="fa-solid fa-lock"></i>
         </span>
 
-        {usuario ? (
-          <>
-            <h1>Área do parceiro</h1>
-            <p>
-              Você entrou como <strong>{usuario.email}</strong>.
-            </p>
-            <p>
-              A área para publicar recomendações e divulgar serviços está em
-              desenvolvimento.
-            </p>
-            <button
-              className="entrar-parceiro-botao"
-              type="button"
-              onClick={sair}
-            >
-              Sair da conta
-            </button>
-          </>
-        ) : (
-          <>
-            <h1>Entrar na plataforma</h1>
-            <p>
-              Use o e-mail e a senha enviados pela equipe KidJourney, ou se já é
-              parceiro a algum tempo, entre com suas credenciais.
-            </p>
+        <>
+          <h1>Entrar na plataforma</h1>
+          <p>
+            Use a senha enviada pela equipe do KidJourney, ou clique em
+            "Esqueceu a senha?" para redefini-la.
+          </p>
 
-            <form className="entrar-parceiro-formulario" onSubmit={entrar}>
-              <div>
-                <label htmlFor="parceiro-login-email">
-                  E-mail{" "}
-                  <span className="campo-obrigatorio" aria-hidden="true">
-                    *
-                  </span>
-                </label>
+          <form className="entrar-parceiro-formulario" onSubmit={entrar}>
+            <div>
+              <label htmlFor="parceiro-login-email">
+                E-mail{" "}
+                <span className="campo-obrigatorio" aria-hidden="true">
+                  *
+                </span>
+              </label>
+              <input
+                id="parceiro-login-email"
+                type="email"
+                value={email}
+                onChange={(evento) => setEmail(evento.target.value)}
+                placeholder="Seu e-mail"
+                autoComplete="email"
+                required
+              />
+            </div>
+
+            <div>
+              <label htmlFor="parceiro-login-senha">
+                Senha{" "}
+                <span className="campo-obrigatorio" aria-hidden="true">
+                  *
+                </span>
+              </label>
+              <div className="entrar-parceiro-senha">
                 <input
-                  id="parceiro-login-email"
-                  type="email"
-                  value={email}
-                  onChange={(evento) => setEmail(evento.target.value)}
-                  placeholder="Seu e-mail"
-                  autoComplete="email"
+                  id="parceiro-login-senha"
+                  type={senhaVisivel ? "text" : "password"}
+                  value={senha}
+                  onChange={(evento) => setSenha(evento.target.value)}
+                  placeholder="Sua senha"
+                  autoComplete="current-password"
                   required
                 />
-              </div>
-
-              <div>
-                <label htmlFor="parceiro-login-senha">
-                  Senha{" "}
-                  <span className="campo-obrigatorio" aria-hidden="true">
-                    *
+                <button
+                  className="entrar-parceiro-mostrar-senha"
+                  type="button"
+                  onClick={() => setSenhaVisivel(!senhaVisivel)}
+                  aria-label={senhaVisivel ? "Ocultar senha" : "Mostrar senha"}
+                  title={senhaVisivel ? "Ocultar senha" : "Mostrar senha"}
+                >
+                  <span className="material-icons">
+                    {senhaVisivel ? "visibility" : "visibility_off"}
                   </span>
-                </label>
-                <div className="entrar-parceiro-senha">
-                  <input
-                    id="parceiro-login-senha"
-                    type={senhaVisivel ? "text" : "password"}
-                    value={senha}
-                    onChange={(evento) => setSenha(evento.target.value)}
-                    placeholder="Sua senha"
-                    autoComplete="current-password"
-                    required
-                  />
-                  <button
-                    className="entrar-parceiro-mostrar-senha"
-                    type="button"
-                    onClick={() => setSenhaVisivel(!senhaVisivel)}
-                    aria-label={
-                      senhaVisivel ? "Ocultar senha" : "Mostrar senha"
-                    }
-                    title={senhaVisivel ? "Ocultar senha" : "Mostrar senha"}
-                  >
-                    <span className="material-icons">
-                      {senhaVisivel ? "visibility" : "visibility_off"}
-                    </span>
-                  </button>
-                </div>
-                <Link
-                  className="entrar-parceiro-esqueceu"
-                  to="/redefinir-senha?origem=parceiros"
-                >
-                  Esqueceu a senha?
-                </Link>
+                </button>
               </div>
-
-              {mensagem && (
-                <p
-                  className="entrar-parceiro-mensagem"
-                  role="alert"
-                  aria-live="polite"
-                >
-                  {mensagem}
-                </p>
-              )}
-
-              <button
-                className="entrar-parceiro-botao"
-                type="submit"
-                disabled={carregando}
+              <Link
+                className="entrar-parceiro-esqueceu"
+                to="/redefinir-senha?origem=parceiros"
               >
-                {carregando ? "Entrando..." : "Entrar"}
-              </button>
-            </form>
-          </>
-        )}
+                Esqueceu a senha?
+              </Link>
+            </div>
 
+            {mensagem && (
+              <p
+                className="entrar-parceiro-mensagem"
+                role="alert"
+                aria-live="polite"
+              >
+                {mensagem}
+              </p>
+            )}
+
+            <button
+              className="entrar-parceiro-botao"
+              type="submit"
+              disabled={carregando}
+            >
+              {carregando ? "Entrando..." : "Entrar"}
+            </button>
+          </form>
+        </>
       </div>
     </section>
   );

@@ -115,8 +115,8 @@ function Home() {
               </li>
             </ol>
           </article>
-          <hr />
         </div>
+        <hr />
 
         <div className="home-section-heading">
           <p className="home-etiqueta">NOSSO TIME</p>
@@ -159,8 +159,8 @@ function Home() {
             </div>
             <p>Design, documentação, ideias, divulgação e coleta por formulário.</p>
           </article>
-          <hr />
         </div>
+        <hr />
 
         <div className="home-section-heading home-section-heading-app">
           <p className="home-etiqueta" id="app">

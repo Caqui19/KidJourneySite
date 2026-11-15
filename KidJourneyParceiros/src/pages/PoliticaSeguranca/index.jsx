@@ -14,6 +14,26 @@ function PoliticaSeguranca() {
         <span className="politica-aviso">Em desenvolvimento...</span>
 
         <section>
+          <h2>Solicitações de parceria</h2>
+          <p>
+            Os dados e documentos enviados pelo formulário de parceria são
+            encaminhados por e-mail à equipe do KidJourney por meio do serviço
+            FormSubmit. O serviço informa que mantém os dados dos envios por 30
+            dias; os arquivos anexados não ficam disponíveis no arquivo de
+            envios. A equipe usa essas informações para analisar a solicitação
+            e responder ao profissional. Consulte a{" "}
+            <a
+              href="https://formsubmit.co/privacy.pdf"
+              target="_blank"
+              rel="noreferrer"
+            >
+              política de privacidade do FormSubmit
+            </a>
+            .
+          </p>
+        </section>
+
+        <section>
           <h2>Seus direitos</h2>
           <p>
             Você pode pedir informações sobre seus dados, solicitar correção ou
@@ -47,7 +67,7 @@ function PoliticaSeguranca() {
         </section>
 
         <p className="politica-data">
-          Última atualização: 26 de outubro de 2026.
+          Última atualização: 13 de novembro de 2026.
         </p>
       </div>
     </section>

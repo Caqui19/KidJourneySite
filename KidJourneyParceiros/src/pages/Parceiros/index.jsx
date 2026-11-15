@@ -1,8 +1,11 @@
-import { Link } from "react-router";
+import { Link, useSearchParams } from "react-router";
 import CadastroParceiroForm from "../../components/CadastroParceiroForm";
 import "./Parceiros.css";
 
 function Parceiros() {
+  const [parametros] = useSearchParams();
+  const solicitacaoRecebida = parametros.get("solicitacao") === "recebida";
+
   return (
     <section className="parceiros-page">
       <div className="parceiros-layout">
@@ -43,7 +46,7 @@ function Parceiros() {
           </div>
         </div>
 
-        <div className="parceiros-formulario">
+        <div className="parceiros-formulario" id="solicitacao-parceria">
           <div className="parceiros-entrar">
             <p>Já é parceiro?</p>
             <Link to="/parceiros/entrar">Entrar na plataforma</Link>
@@ -54,6 +57,12 @@ function Parceiros() {
             <h2>Solicite uma parceria</h2>
             <p>Conte sobre sua área e envie os documentos que comprovam sua formação.</p>
           </div>
+          {solicitacaoRecebida && (
+            <p className="parceiros-confirmacao" role="status">
+              Sua solicitação foi enviada. Nossa equipe vai analisar as informações
+              e entrar em contato pelo e-mail informado.
+            </p>
+          )}
           <CadastroParceiroForm />
         </div>
       </div>

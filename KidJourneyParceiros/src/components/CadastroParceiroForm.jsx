@@ -1,44 +1,58 @@
+import { useState } from "react";
 import { Link } from "react-router";
 import "./CadastroParceiroForm.css";
 
 function CadastroParceiroForm() {
-  function enviarCadastro(evento) {
-    evento.preventDefault();
+  const [erroDocumentos, setErroDocumentos] = useState("");
 
-    const dados = new FormData(evento.currentTarget);
-    const documentos = Array.from(dados.getAll("documentos"))
-      .map((arquivo) => arquivo.name)
-      .filter((nome) => nome)
-      .join(", ");
+  function validarFormulario(evento) {
+    const formulario = evento.currentTarget;
+    formulario.elements._replyto.value = formulario.elements.email.value.trim();
 
-    const corpo = [
-      "Solicitação de parceria KidJourney",
-      "",
-      "Nome: " + dados.get("nome"),
-      "E-mail: " + dados.get("email"),
-      "WhatsApp: " + dados.get("whatsapp"),
-      "Área profissional: " + dados.get("profissao"),
-      "Conselho: " + dados.get("conselho"),
-      "Registro ou certificação: " + dados.get("registro"),
-      "Documentos selecionados: " + documentos,
-      "Política de Segurança aceita: sim",
-      "",
-      "Mensagem:",
-      dados.get("mensagem"),
-    ].join("\n");
+    const arquivos = Array.from(formulario.elements.documentos.files);
+    const tamanhoTotal = arquivos.reduce(
+      (total, arquivo) => total + arquivo.size,
+      0,
+    );
 
-    const assunto = encodeURIComponent("Solicitação de parceria KidJourney");
-    const mensagem = encodeURIComponent(corpo);
+    if (tamanhoTotal > 10 * 1024 * 1024) {
+      evento.preventDefault();
+      setErroDocumentos("Os arquivos devem somar no máximo 10 MB.");
+      return;
+    }
 
-    window.location.href =
-      "mailto:kidjourneycontato@gmail.com?subject=" +
-      assunto +
-      "&body=" +
-      mensagem;
+    setErroDocumentos("");
   }
 
   return (
-    <form id="cadastro-parceiro-form" onSubmit={enviarCadastro}>
+    <form
+      id="cadastro-parceiro-form"
+      action="https://formsubmit.co/kidjourneycontato@gmail.com"
+      method="POST"
+      encType="multipart/form-data"
+      onSubmit={validarFormulario}
+    >
+      <input type="hidden" name="_replyto" value="" />
+      <input
+        type="hidden"
+        name="_subject"
+        value="Solicitação de parceria KidJourney"
+      />
+      <input
+        type="hidden"
+        name="_next"
+        value={`${window.location.origin}/parceiros?solicitacao=recebida#solicitacao-parceria`}
+      />
+      <input type="hidden" name="_template" value="table" />
+      <input
+        className="campo-anti-spam"
+        type="text"
+        name="_honey"
+        tabIndex="-1"
+        autoComplete="off"
+        aria-hidden="true"
+      />
+
       <div className="inputContainer">
         <label htmlFor="parceiro-nome">
           Nome completo{" "}
@@ -133,7 +147,12 @@ function CadastroParceiroForm() {
           multiple
           required
         />
-        <small>Anexe os arquivos manualmente ao e-mail que será aberto.</small>
+        <small>Envie PDF, JPG ou PNG. Tamanho máximo total: 10 MB.</small>
+        {erroDocumentos && (
+          <small className="erro-documentos" role="alert">
+            {erroDocumentos}
+          </small>
+        )}
       </div>
 
       <div className="inputContainer">

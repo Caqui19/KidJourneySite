@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site": "kidjourney-3cc97",
     "public": "dist",
     "ignore": [
       "firebase.json",

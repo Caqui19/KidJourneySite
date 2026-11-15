@@ -106,6 +106,7 @@ main>section.site-content {
   gap: 42px;
   width: 100%;
   padding: 72px max(24px, calc((100% - 1100px) / 2));
+  padding-bottom: 0;
   background: #fff;
 }
 
@@ -132,10 +133,6 @@ main>section.site-content {
   color: var(--text-color);
   font-size: var(--big-size);
   line-height: 1.7;
-}
-
-.home-section-heading-app {
-  margin-top: 4px;
 }
 
 .site-content .mvvContainer {
@@ -494,7 +491,7 @@ main > section.contact-content:last-child {
   width: 100%;
   gap: 28px;
   margin: 0 auto;
-  padding: 65px max(24px, calc((100% - 1100px) / 2));
+  padding: 42px max(24px, calc((100% - 1100px) / 2)) 65px;
   background: #fff;
 }
 
@@ -584,6 +581,7 @@ main > section.contact-content:last-child {
   main > section.site-content {
     gap: 34px;
     padding: 56px 24px;
+    padding-bottom: 0;
   }
 
   .site-content .mvvContainer > div {
@@ -621,7 +619,7 @@ main > section.contact-content:last-child {
   main > section.contact-content:last-child {
     grid-template-columns: minmax(0, 1fr);
     gap: 22px;
-    padding: 48px 24px;
+    padding: 34px 24px 48px;
   }
 }
 
@@ -653,6 +651,7 @@ main > section.contact-content:last-child {
   main > section.site-content {
     gap: 30px;
     padding: 44px 16px;
+    padding-bottom: 0;
   }
 
   .site-content .mvvContainer > div,
@@ -702,6 +701,6 @@ main > section.contact-content:last-child {
   }
 
   main > section.contact-content:last-child {
-    padding: 40px 16px;
+    padding: 30px 16px 40px;
   }
 }
