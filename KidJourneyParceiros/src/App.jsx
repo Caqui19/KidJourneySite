@@ -16,6 +16,7 @@ import "./components/Footer.css";
 import Home from "./pages/Home";
 import Forum from "./pages/Forum";
 import Parceiros from "./pages/Parceiros";
+import Premium from "./pages/Premium";
 import EntrarParceiro from "./pages/EntrarParceiro";
 import PoliticaSeguranca from "./pages/PoliticaSeguranca";
 import RedefinirSenha from "./pages/RedefinirSenha";
@@ -59,6 +60,11 @@ function LinksDoMenu({ aoClicar, mostrarPolitica = false, usuario }) {
       <li>
         <NavLink to="/" end onClick={aoClicar} className={classeAtiva}>
           Início
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="/premium" onClick={aoClicar} className={classeAtiva}>
+          Premium
         </NavLink>
       </li>
       <li>
@@ -145,6 +151,7 @@ function App() {
       <main className={esconderCabecalho ? "sem-header" : ""}>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/premium" element={<Premium />} />
           <Route path="/parceiros" element={<Parceiros />} />
           <Route path="/parceiros/entrar" element={<EntrarParceiro />} />
           <Route

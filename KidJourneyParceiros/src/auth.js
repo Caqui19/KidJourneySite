@@ -60,6 +60,7 @@ export async function cadastrarUsuario({ nome, email, senha, politicaAceita }) {
       email: usuario.email,
       perfil: "cliente",
       aprovado: false,
+      premium: false,
       politicaSegurancaAceita: politicaAceita,
       aceitoEm: serverTimestamp(),
     });
@@ -86,6 +87,7 @@ export async function validarPerfil(usuario, perfilEsperado) {
         email: usuario.email,
         perfil: "cliente",
         aprovado: false,
+        premium: false,
       },
       { merge: true },
     );

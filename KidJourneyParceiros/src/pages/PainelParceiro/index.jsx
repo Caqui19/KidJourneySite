@@ -1,4 +1,18 @@
 import { useEffect, useRef, useState } from "react";
+import { updateProfile } from "firebase/auth";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  onSnapshot,
+  query,
+  serverTimestamp,
+  updateDoc,
+  where,
+} from "firebase/firestore";
+import { db } from "../../firebase.js";
 import "./PainelParceiro.css";
 
 const opcoesEspecificidade = [
@@ -28,72 +42,31 @@ const opcoesEspecificidade = [
   "Evita açúcar adicionado",
 ];
 
-const publicacoesIniciais = [
-  {
-    id: 1,
-    tipo: "recomendacao",
-    titulo: "Ideias para uma rotina alimentar",
-    categoria: "Alimentação",
-    faixaEtaria: "1 a 3 anos",
-    etapa: "Alimentação complementar",
-    especificidades: ["Seletividade alimentar"],
-    texto:
-      "Este conteúdo de demonstração apresenta uma orientação mais completa para as famílias. O profissional pode explicar os pontos principais, considerar a etapa de desenvolvimento e indicar como a recomendação se relaciona às necessidades da criança. Cada família pode adaptar esse momento à sua rotina e observar como a criança responde. Quando a descrição passar de cinco linhas, o card mostra apenas o início e permite abrir o restante em “Ler mais”.",
-    status: "Publicado",
-    dataPublicacao: new Date(Date.now() - 86400000).toISOString(),
-    autorNome: "Camila Oliveira",
-    autorProfissao: "Nutricionista",
-    visualizacoes: 128,
-  },
-  {
-    id: 2,
-    tipo: "recomendacao",
-    titulo: "Acompanhamento do desenvolvimento",
-    categoria: "Desenvolvimento",
-    faixaEtaria: "0 a 5 anos",
-    etapa: "Primeiros passos",
-    especificidades: [],
-    texto:
-      "Uma orientação geral pode ser adaptada ao perfil e à etapa de cada criança.",
-    status: "Rascunho",
-    dataPublicacao: null,
-    autorNome: "Marcos Andrade",
-    autorProfissao: "Pediatra",
-    visualizacoes: 0,
-  },
-  {
-    id: 3,
-    tipo: "publicidade",
-    titulo: "Consulta nutricional infantil",
-    categoria: "Serviço",
-    faixaEtaria: "Todas as idades",
-    etapa: "Todas as etapas",
-    especificidades: ["Doença celíaca", "Alergia a outro alimento"],
-    texto: "Atendimento personalizado para apoiar a alimentação da criança.",
-    status: "Publicado",
-    dataPublicacao: new Date(Date.now() - 3600000).toISOString(),
-    autorNome: "Juliana Martins",
-    autorProfissao: "Nutricionista",
-    visualizacoes: 84,
-    link: "https://exemplo.com/consulta",
-  },
-];
-
 function novaPublicacao(tipo = "recomendacao") {
   return {
     tipo,
     titulo: "",
     categoria: tipo === "publicidade" ? "Produto" : "Alimentação",
-    faixaEtaria: "0 a 5 anos",
+    faixaEtaria: "Início: 0 a 5 meses",
     etapa: "Todas as etapas",
     especificidades: [],
     texto: "",
     status: "Rascunho",
-    dataPublicacao: null,
-    autorNome: "",
-    autorProfissao: "",
     link: "",
-    visualizacoes: 0,
+  };
+}
+
+function prepararDadosFormulario(publicacao) {
+  return {
+    tipo: publicacao.tipo,
+    titulo: publicacao.titulo,
+    categoria: publicacao.categoria,
+    faixaEtaria: publicacao.faixaEtaria,
+    etapa: publicacao.etapa,
+    especificidades: publicacao.especificidades || [],
+    texto: publicacao.texto,
+    status: publicacao.status,
+    link: publicacao.link || "",
   };
 }
 
@@ -104,7 +77,7 @@ function rotuloTipo(tipo) {
 function formatarDataHora(data) {
   if (!data) return "Ainda não publicada";
 
-  const dataPublicacao = new Date(data);
+  const dataPublicacao = data.toDate ? data.toDate() : new Date(data);
   const dataFormatada = dataPublicacao.toLocaleDateString("pt-BR", {
     day: "2-digit",
     month: "2-digit",
@@ -162,8 +135,10 @@ function DescricaoPublicacao({ texto }) {
 
 function FormularioPublicacao({ publicacao, aoFechar, aoSalvar }) {
   const [dados, setDados] = useState(
-    publicacao ? { ...publicacao } : novaPublicacao(),
+    publicacao ? prepararDadosFormulario(publicacao) : novaPublicacao(),
   );
+  const [mensagemErro, setMensagemErro] = useState("");
+  const [salvando, setSalvando] = useState(false);
 
   function atualizar(campo, valor) {
     setDados((atual) => ({ ...atual, [campo]: valor }));
@@ -178,9 +153,19 @@ function FormularioPublicacao({ publicacao, aoFechar, aoSalvar }) {
     atualizar("especificidades", especificidades);
   }
 
-  function enviar(evento) {
+  async function enviar(evento) {
     evento.preventDefault();
-    aoSalvar(dados);
+    setMensagemErro("");
+    setSalvando(true);
+
+    try {
+      await aoSalvar(dados);
+    } catch (erro) {
+      console.error("Erro ao salvar publicação:", erro);
+      setMensagemErro("Não foi possível salvar a publicação. Tente novamente.");
+    } finally {
+      setSalvando(false);
+    }
   }
 
   return (
@@ -261,12 +246,12 @@ function FormularioPublicacao({ publicacao, aoFechar, aoSalvar }) {
                   atualizar("faixaEtaria", evento.target.value)
                 }
               >
-                <option>0 a 5 anos</option>
-                <option>0 a 6 meses</option>
-                <option>6 a 12 meses</option>
-                <option>1 a 3 anos</option>
-                <option>3 a 5 anos</option>
-                <option>Todas as idades</option>
+                <option>Início: 0 a 5 meses</option>
+                <option>Introdução alimentar: 6 a 8 meses</option>
+                <option>Ampliação alimentar: 9 a 11 meses</option>
+                <option>Transição para a comida da família: 1 a 2 anos</option>
+                <option>Autonomia: 2 a 3 anos</option>
+                <option>Pré-escolar: 3 a 5 anos</option>
               </select>
             </label>
           </div>
@@ -339,6 +324,12 @@ function FormularioPublicacao({ publicacao, aoFechar, aoSalvar }) {
             </select>
           </label>
 
+          {mensagemErro && (
+            <p className="painel-erro" role="alert">
+              {mensagemErro}
+            </p>
+          )}
+
           <div className="painel-modal-acoes">
             <button
               className="painel-botao-secundario"
@@ -347,8 +338,8 @@ function FormularioPublicacao({ publicacao, aoFechar, aoSalvar }) {
             >
               Cancelar
             </button>
-            <button className="painel-botao" type="submit">
-              Salvar publicação
+            <button className="painel-botao" type="submit" disabled={salvando}>
+              {salvando ? "Salvando..." : "Salvar publicação"}
             </button>
           </div>
         </form>
@@ -357,7 +348,7 @@ function FormularioPublicacao({ publicacao, aoFechar, aoSalvar }) {
   );
 }
 
-function DetalhesPublicacao({ publicacao, aoFechar }) {
+function DetalhesPublicacao({ publicacao, profissaoAutor, aoFechar }) {
   return (
     <div className="painel-modal-fundo" onMouseDown={aoFechar}>
       <section
@@ -395,7 +386,7 @@ function DetalhesPublicacao({ publicacao, aoFechar }) {
             </span>
             <span>
               <i className="fa-solid fa-user-doctor"></i>
-              {publicacao.autorNome} • {publicacao.autorProfissao}
+              {publicacao.autorNome} • {profissaoAutor}
             </span>
           </div>
           <div className="painel-tags">
@@ -429,6 +420,23 @@ function DetalhesPublicacao({ publicacao, aoFechar }) {
 }
 
 function ConfirmarExclusao({ publicacao, aoFechar, aoExcluir }) {
+  const [mensagemErro, setMensagemErro] = useState("");
+  const [excluindo, setExcluindo] = useState(false);
+
+  async function excluir() {
+    setMensagemErro("");
+    setExcluindo(true);
+
+    try {
+      await aoExcluir();
+    } catch (erro) {
+      console.error("Erro ao excluir publicação:", erro);
+      setMensagemErro("Não foi possível excluir a publicação. Tente novamente.");
+    } finally {
+      setExcluindo(false);
+    }
+  }
+
   return (
     <div className="painel-modal-fundo" onMouseDown={aoFechar}>
       <section
@@ -438,11 +446,17 @@ function ConfirmarExclusao({ publicacao, aoFechar, aoExcluir }) {
         aria-labelledby="painel-exclusao-titulo"
         onMouseDown={(evento) => evento.stopPropagation()}
       >
-        <span className="painel-alerta-icone">
-          <i className="fa-solid fa-trash-can"></i>
-        </span>
         <h2 id="painel-exclusao-titulo">Excluir publicação?</h2>
-        <p>“{publicacao.titulo}” será removida desta demonstração.</p>
+        <p>
+          <span className="painel-titulo-exclusao">
+            “{publicacao.titulo}”
+          </span>
+        </p>
+        {mensagemErro && (
+          <p className="painel-erro" role="alert">
+            {mensagemErro}
+          </p>
+        )}
         <div className="painel-modal-acoes">
           <button
             className="painel-botao-secundario"
@@ -454,9 +468,10 @@ function ConfirmarExclusao({ publicacao, aoFechar, aoExcluir }) {
           <button
             className="painel-botao-perigo"
             type="button"
-            onClick={aoExcluir}
+            onClick={excluir}
+            disabled={excluindo}
           >
-            Excluir
+            {excluindo ? "Excluindo..." : "Excluir"}
           </button>
         </div>
       </section>
@@ -465,26 +480,124 @@ function ConfirmarExclusao({ publicacao, aoFechar, aoExcluir }) {
 }
 
 function PainelParceiro({ usuario, aoSair }) {
-  const [publicacoes, setPublicacoes] = useState(publicacoesIniciais);
+  const [publicacoes, setPublicacoes] = useState([]);
+  const [carregandoPublicacoes, setCarregandoPublicacoes] = useState(true);
+  const [erroCarregamento, setErroCarregamento] = useState("");
+  const [erroAcao, setErroAcao] = useState("");
+  const [perfilParceiro, setPerfilParceiro] = useState(null);
+  const [nomeEditado, setNomeEditado] = useState("");
+  const [salvandoNome, setSalvandoNome] = useState(false);
+  const [erroNome, setErroNome] = useState("");
+  const [publicandoId, setPublicandoId] = useState("");
   const [aba, setAba] = useState("todas");
   const [busca, setBusca] = useState("");
   const [filtroEspecificidade, setFiltroEspecificidade] = useState("");
   const [filtroStatus, setFiltroStatus] = useState("todas");
   const [modal, setModal] = useState("");
   const [selecionada, setSelecionada] = useState(null);
+
   const nomeAutor =
-    usuario.displayName || usuario.email?.split("@")[0] || "Parceiro";
-  const profissaoAutor = usuario.profissao || "Profissional parceiro";
+    perfilParceiro?.nome ||
+    usuario.displayName ||
+    usuario.email?.split("@")[0] ||
+    "Parceiro";
+  const profissaoAutor = perfilParceiro?.profissao || "Profissional parceiro";
+
+  useEffect(() => {
+    const consulta = query(
+      collection(db, "publicacoes"),
+      where("autorId", "==", usuario.uid),
+    );
+
+    return onSnapshot(
+      consulta,
+      (resultado) => {
+        const publicacoesRecebidas = resultado.docs.map((documento) => ({
+          id: documento.id,
+          ...documento.data(),
+        }));
+
+        publicacoesRecebidas.sort(
+          (a, b) =>
+            (b.atualizadoEm?.toMillis?.() || 0) -
+            (a.atualizadoEm?.toMillis?.() || 0),
+        );
+
+        setPublicacoes(publicacoesRecebidas);
+        setCarregandoPublicacoes(false);
+        setErroCarregamento("");
+      },
+      (erro) => {
+        console.error("Erro ao carregar publicações:", erro);
+        setErroCarregamento(
+          "Não foi possível carregar suas publicações. Tente novamente mais tarde.",
+        );
+        setCarregandoPublicacoes(false);
+      },
+    );
+  }, [usuario.uid]);
+
+  useEffect(() => {
+    let componenteAtivo = true;
+
+    getDoc(doc(db, "usuarios", usuario.uid))
+      .then((documento) => {
+        if (componenteAtivo) {
+          setPerfilParceiro(documento.exists() ? documento.data() : {});
+        }
+      })
+      .catch((erro) => {
+        console.error("Erro ao carregar perfil do parceiro:", erro);
+        if (componenteAtivo) setPerfilParceiro({});
+      });
+
+    return () => {
+      componenteAtivo = false;
+    };
+  }, [usuario.uid]);
+
+  function abrirEdicaoNome() {
+    setNomeEditado(nomeAutor);
+    setErroNome("");
+    setModal("nome");
+  }
+
+  async function salvarNome(evento) {
+    evento.preventDefault();
+
+    const nome = nomeEditado.trim();
+    if (!nome) {
+      setErroNome("Informe seu nome.");
+      return;
+    }
+
+    setSalvandoNome(true);
+    setErroNome("");
+
+    try {
+      await updateDoc(doc(db, "usuarios", usuario.uid), { nome });
+      setPerfilParceiro((atual) => ({ ...atual, nome }));
+      await updateProfile(usuario, { displayName: nome }).catch((erro) => {
+        console.warn("O nome foi salvo, mas não sincronizado com o perfil de acesso.", erro);
+      });
+      setModal("");
+    } catch (erro) {
+      console.error("Erro ao atualizar o nome do parceiro:", erro);
+      setErroNome("Não foi possível atualizar seu nome. Tente novamente.");
+    } finally {
+      setSalvandoNome(false);
+    }
+  }
 
   const publicacoesFiltradas = publicacoes.filter((publicacao) => {
     const combinaAba = aba === "todas" || publicacao.tipo === aba;
     const combinaBusca =
-      publicacao.titulo.toLowerCase().includes(busca.toLowerCase()) ||
-      publicacao.categoria.toLowerCase().includes(busca.toLowerCase()) ||
-      publicacao.texto.toLowerCase().includes(busca.toLowerCase());
+      (publicacao.titulo || "").toLowerCase().includes(busca.toLowerCase()) ||
+      (publicacao.categoria || "").toLowerCase().includes(busca.toLowerCase()) ||
+      (publicacao.texto || "").toLowerCase().includes(busca.toLowerCase());
     const combinaEspecificidade =
       !filtroEspecificidade ||
-      !publicacao.especificidades.length ||
+      !publicacao.especificidades?.length ||
       publicacao.especificidades.includes(filtroEspecificidade);
     const combinaStatus =
       filtroStatus === "todas" || publicacao.status === filtroStatus;
@@ -497,56 +610,57 @@ function PainelParceiro({ usuario, aoSair }) {
     setModal("formulario");
   }
 
-  function salvarPublicacao(dados) {
+  async function salvarPublicacao(dados) {
+    setErroAcao("");
+
     const publicacaoSalva = {
       ...dados,
-      autorNome: selecionada?.autorNome || nomeAutor,
-      autorProfissao: selecionada?.autorProfissao || profissaoAutor,
+      autorId: usuario.uid,
+      autorNome: nomeAutor,
+      autorProfissao: profissaoAutor,
       dataPublicacao:
         dados.status === "Publicado"
-          ? selecionada?.dataPublicacao || new Date().toISOString()
+          ? selecionada?.dataPublicacao || serverTimestamp()
           : null,
+      atualizadoEm: serverTimestamp(),
     };
 
     if (selecionada) {
-      setPublicacoes((atual) =>
-        atual.map((item) =>
-          item.id === selecionada.id ? { ...item, ...publicacaoSalva } : item,
-        ),
-      );
+      await updateDoc(doc(db, "publicacoes", selecionada.id), publicacaoSalva);
     } else {
-      setPublicacoes((atual) => [
-        { ...publicacaoSalva, id: Date.now() },
-        ...atual,
-      ]);
+      await addDoc(collection(db, "publicacoes"), {
+        ...publicacaoSalva,
+        visualizacoes: 0,
+        criadoEm: serverTimestamp(),
+      });
     }
 
     setModal("");
     setSelecionada(null);
   }
 
-  function excluirPublicacao() {
-    setPublicacoes((atual) =>
-      atual.filter((item) => item.id !== selecionada.id),
-    );
+  async function excluirPublicacao() {
+    await deleteDoc(doc(db, "publicacoes", selecionada.id));
     setModal("");
     setSelecionada(null);
   }
 
-  function publicarPublicacao(id) {
-    setPublicacoes((atual) =>
-      atual.map((item) =>
-        item.id === id
-          ? {
-              ...item,
-              status: "Publicado",
-              dataPublicacao: item.dataPublicacao || new Date().toISOString(),
-              autorNome: item.autorNome || nomeAutor,
-              autorProfissao: item.autorProfissao || profissaoAutor,
-            }
-          : item,
-      ),
-    );
+  async function publicarPublicacao(publicacao) {
+    setErroAcao("");
+    setPublicandoId(publicacao.id);
+
+    try {
+      await updateDoc(doc(db, "publicacoes", publicacao.id), {
+        status: "Publicado",
+        dataPublicacao: publicacao.dataPublicacao || serverTimestamp(),
+        atualizadoEm: serverTimestamp(),
+      });
+    } catch (erro) {
+      console.error("Erro ao publicar conteúdo:", erro);
+      setErroAcao("Não foi possível publicar o conteúdo. Tente novamente.");
+    } finally {
+      setPublicandoId("");
+    }
   }
 
   function abrirCriacao() {
@@ -569,9 +683,16 @@ function PainelParceiro({ usuario, aoSair }) {
               <i className="fa-solid fa-user-doctor"></i>
             </span>
             <div className="painel-identificacao">
-              <strong className="painel-nome">
-                {usuario.displayName || usuario.email.split("@")[0]}
-              </strong>
+              <div className="painel-nome-linha">
+                <strong className="painel-nome">{nomeAutor}</strong>
+                <button
+                  className="painel-editar-nome-link"
+                  type="button"
+                  onClick={abrirEdicaoNome}
+                >
+                  Editar nome
+                </button>
+              </div>
               <span className="painel-email">{usuario.email}</span>
             </div>
             <button
@@ -600,6 +721,12 @@ function PainelParceiro({ usuario, aoSair }) {
               Criar publicação
             </button>
           </div>
+
+          {erroAcao && (
+            <p className="painel-erro" role="alert">
+              {erroAcao}
+            </p>
+          )}
 
           <div className="painel-filtros">
             <div
@@ -660,7 +787,17 @@ function PainelParceiro({ usuario, aoSair }) {
             </div>
           </div>
 
-          {publicacoesFiltradas.length ? (
+          {carregandoPublicacoes ? (
+            <div className="painel-vazio">
+              <p>Carregando publicações...</p>
+            </div>
+          ) : erroCarregamento ? (
+            <div className="painel-vazio">
+              <p className="painel-erro" role="alert">
+                {erroCarregamento}
+              </p>
+            </div>
+          ) : publicacoesFiltradas.length ? (
             <div className="painel-publicacoes">
               {publicacoesFiltradas.map((publicacao) => (
                 <article className="painel-publicacao" key={publicacao.id}>
@@ -684,10 +821,17 @@ function PainelParceiro({ usuario, aoSair }) {
                     <button
                       className="painel-botao-publicar"
                       type="button"
-                      disabled={publicacao.status === "Publicado"}
-                      onClick={() => publicarPublicacao(publicacao.id)}
+                      disabled={
+                        publicacao.status === "Publicado" ||
+                        publicandoId === publicacao.id
+                      }
+                      onClick={() => publicarPublicacao(publicacao)}
                     >
-                      {publicacao.status === "Publicado" ? "Já Publicado" : "Publicar"}
+                      {publicacao.status === "Publicado"
+                        ? "Já Publicado"
+                        : publicandoId === publicacao.id
+                          ? "Publicando..."
+                          : "Publicar"}
                     </button>
                   </div>
                   <h3>{publicacao.titulo}</h3>
@@ -710,11 +854,11 @@ function PainelParceiro({ usuario, aoSair }) {
                     </span>
                     <span>
                       <i className="fa-solid fa-user-doctor"></i>
-                      {publicacao.autorNome} • {publicacao.autorProfissao}
+                      {publicacao.autorNome} • {profissaoAutor}
                     </span>
                   </div>
                   <div className="painel-tags">
-                    {publicacao.especificidades.length ? (
+                    {publicacao.especificidades?.length ? (
                       publicacao.especificidades.map((item) => (
                         <span key={item}>{item}</span>
                       ))
@@ -758,11 +902,21 @@ function PainelParceiro({ usuario, aoSair }) {
             </div>
           ) : (
             <div className="painel-vazio">
-              <span>
-                <i className="fa-solid fa-magnifying-glass"></i>
-              </span>
-              <h3>Nenhuma publicação encontrada</h3>
-              <p>Altere os filtros ou crie uma nova publicação.</p>
+              {publicacoes.length > 0 && (
+                <span>
+                  <i className="fa-solid fa-magnifying-glass"></i>
+                </span>
+              )}
+              <h3>
+                {publicacoes.length
+                  ? "Nenhuma publicação encontrada"
+                  : "Você ainda não tem publicações"}
+              </h3>
+              <p>
+                {publicacoes.length
+                  ? "Altere os filtros ou crie uma nova publicação."
+                  : "Suas publicações aparecerão aqui. Crie uma para começar."}
+              </p>
             </div>
           )}
         </section>
@@ -776,9 +930,64 @@ function PainelParceiro({ usuario, aoSair }) {
           aoSalvar={salvarPublicacao}
         />
       )}
+      {modal === "nome" && (
+        <div
+          className="painel-modal-fundo"
+          onMouseDown={() => setModal("")}
+        >
+          <section
+            className="painel-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="painel-editar-nome-titulo"
+            onMouseDown={(evento) => evento.stopPropagation()}
+          >
+            <div className="painel-modal-topo">
+              <h2 id="painel-editar-nome-titulo">Editar nome</h2>
+              <button
+                className="painel-fechar"
+                type="button"
+                onClick={() => setModal("")}
+                aria-label="Fechar edição do nome"
+              >
+                <i className="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+            <form className="painel-formulario" onSubmit={salvarNome}>
+              <label htmlFor="painel-nome-parceiro">Nome</label>
+              <input
+                id="painel-nome-parceiro"
+                value={nomeEditado}
+                onChange={(evento) => setNomeEditado(evento.target.value)}
+                maxLength={80}
+                autoFocus
+                required
+              />
+              {erroNome && (
+                <p className="painel-erro" role="alert">
+                  {erroNome}
+                </p>
+              )}
+              <div className="painel-modal-acoes">
+                <button
+                  className="painel-botao-secundario"
+                  type="button"
+                  onClick={() => setModal("")}
+                >
+                  Cancelar
+                </button>
+                <button className="painel-botao" type="submit" disabled={salvandoNome}>
+                  {salvandoNome ? "Salvando..." : "Salvar nome"}
+                </button>
+              </div>
+            </form>
+          </section>
+        </div>
+      )}
       {modal === "visualizar" && selecionada && (
         <DetalhesPublicacao
           publicacao={selecionada}
+          profissaoAutor={profissaoAutor}
           aoFechar={() => setModal("")}
         />
       )}

@@ -34,6 +34,16 @@ function ClientSignupForm() {
           "Esse e-mail já está cadastrado. Entre na sua conta.",
         "auth/invalid-email": "Confira se o e-mail está escrito corretamente.",
         "auth/weak-password": "A senha precisa ter pelo menos 8 caracteres.",
+        "auth/unauthorized-domain":
+          "O domínio deste site não está autorizado no Firebase Authentication.",
+        "auth/operation-not-allowed":
+          "O cadastro por e-mail e senha está desativado no Firebase Authentication.",
+        "auth/api-key-not-valid":
+          "A chave Firebase usada pelo site foi rejeitada.",
+        "permission-denied":
+          "O Firestore bloqueou a criação do perfil. Confira as regras publicadas.",
+        "auth/network-request-failed":
+          "Não foi possível conectar ao Firebase. Confira sua conexão.",
         "terms/not-accepted":
           "Aceite a Política de Segurança para criar sua conta.",
       };
