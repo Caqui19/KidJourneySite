@@ -12,6 +12,7 @@ import {
   getDoc,
   serverTimestamp,
   setDoc,
+  updateDoc,
 } from "firebase/firestore";
 import { auth, db } from "./firebase.js";
 
@@ -146,4 +147,10 @@ export async function sairUsuario() {
 
 export async function redefinirSenha(email) {
   await sendPasswordResetEmail(auth, email);
+}
+
+export async function ativarPremium(usuario) {
+  await updateDoc(doc(db, "usuarios", usuario.uid), {
+    premium: true,
+  });
 }
