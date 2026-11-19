@@ -5,7 +5,6 @@ import {
   Navigate,
   Route,
   Routes,
-  useLocation,
   useNavigate,
 } from "react-router";
 import { observarUsuario, validarPerfil } from "./auth";
@@ -14,7 +13,6 @@ import "./components/Header.css";
 import "./components/Footer.css";
 
 import Home from "./pages/Home";
-import Forum from "./pages/Forum";
 import Parceiros from "./pages/Parceiros";
 import Premium from "./pages/Premium";
 import EntrarParceiro from "./pages/EntrarParceiro";
@@ -76,11 +74,6 @@ function LinksDoMenu({ aoClicar, mostrarPolitica = false, usuario }) {
           Parceiros
         </NavLink>
       </li>
-      <li>
-        <NavLink to="/forum" onClick={aoClicar} className={classeAtiva}>
-          Fórum
-        </NavLink>
-      </li>
       {mostrarPolitica && (
         <li>
           <NavLink to="/politica-de-seguranca" className={classeAtiva}>
@@ -95,41 +88,32 @@ function LinksDoMenu({ aoClicar, mostrarPolitica = false, usuario }) {
 function App() {
   const [menuAberto, setMenuAberto] = useState(false);
   const fecharMenu = () => setMenuAberto(false);
-  const estaNoForum = useLocation().pathname === "/forum";
-  const [estadoSessao, setEstadoSessao] = useState(null);
-  const sessaoVerificada = estadoSessao?.estaNoForum === estaNoForum;
-  const usuario = sessaoVerificada ? estadoSessao.usuario : null;
-  const verificandoUsuario = estaNoForum && !sessaoVerificada;
-  const esconderCabecalho = estaNoForum && !verificandoUsuario && !!usuario;
+  const [usuario, setUsuario] = useState(null);
 
   useEffect(() => {
-    return observarUsuario((usuarioAtual) => {
-      setEstadoSessao({ estaNoForum, usuario: usuarioAtual });
-    }, estaNoForum ? "cliente" : null);
-  }, [estaNoForum]);
+    return observarUsuario(setUsuario);
+  }, []);
 
   return (
     <>
-      {!esconderCabecalho && (
-        <header>
-          <Link to="/">
-            <img src="/logo.svg" alt="Logo do KidJourney" />
-          </Link>
+      <header>
+        <Link to="/">
+          <img src="/logo.svg" alt="Logo do KidJourney" />
+        </Link>
 
-          <nav>
-            <LinksDoMenu usuario={usuario} />
-          </nav>
+        <nav>
+          <LinksDoMenu usuario={usuario} />
+        </nav>
 
-          <button
-            id="hamburguer"
-            type="button"
-            onClick={() => setMenuAberto(true)}
-          >
-            <i className="fa-solid fa-bars"></i>
-          </button>
-        </header>
-      )}
-      {!esconderCabecalho && menuAberto && (
+        <button
+          id="hamburguer"
+          type="button"
+          onClick={() => setMenuAberto(true)}
+        >
+          <i className="fa-solid fa-bars"></i>
+        </button>
+      </header>
+      {menuAberto && (
         <div id="menu">
           <div>
             <Link to="/" onClick={fecharMenu}>
@@ -148,7 +132,7 @@ function App() {
         </div>
       )}
 
-      <main className={esconderCabecalho ? "sem-header" : ""}>
+      <main>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/premium" element={<Premium />} />
@@ -166,8 +150,8 @@ function App() {
             path="/politica-de-seguranca"
             element={<PoliticaSeguranca />}
           />
-          <Route path="/forum" element={<Forum />} />
           <Route path="/redefinir-senha" element={<RedefinirSenha />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
 

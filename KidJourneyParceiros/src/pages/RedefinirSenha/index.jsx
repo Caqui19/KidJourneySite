@@ -77,8 +77,8 @@ function RedefinirSenha() {
           </button>
         </form>
 
-        <Link className="redefinir-voltar" to={veioDosParceiros ? "/parceiros/entrar" : "/forum"}>
-          {veioDosParceiros ? "Voltar para a plataforma" : "Voltar para o login"}
+        <Link className="redefinir-voltar" to={veioDosParceiros ? "/parceiros/entrar" : "/"}>
+          {veioDosParceiros ? "Voltar para a plataforma" : "Voltar para o início"}
         </Link>
       </div>
     </section>

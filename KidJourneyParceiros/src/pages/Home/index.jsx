@@ -1,9 +1,12 @@
-import { Link } from "react-router";
+import { Link, useSearchParams } from "react-router";
 import ClientSignupForm from "../../components/ClientSignupForm";
 import SiteContactForm from "../../components/SiteContactForm";
 import "./Home.css";
 
 function Home() {
+  const [parametros] = useSearchParams();
+  const contatoRecebido = parametros.get("contato") === "recebido";
+
   return (
     <>
       <section className="home-hero">
@@ -236,21 +239,9 @@ function Home() {
         <div className="linha">
           <hr />
         </div>
-        <h2 className="subtitulo">
-          Faça parte da nossa comunidade de famílias
-        </h2>
-        <div className="forumContainer">
-          <p>
-            Acompanhe recomendações, compartilhe experiências e encontre apoio
-            nos primeiros passos da jornada de cuidado e desenvolvimento da sua
-            criança.
-          </p>
-          <a href="/forum">Entre no Fórum</a>
-        </div>
-        <hr />
       </section>
 
-      <section className="contact-content">
+      <section className="contact-content" id="fale-conosco">
         <div className="primeiroContainer">
           <div>
             <h2>
@@ -271,6 +262,11 @@ function Home() {
 
         <div className="segundoContainer">
           <h1>Fale conosco</h1>
+          {contatoRecebido && (
+            <p className="contato-confirmacao" role="status">
+              Sua mensagem foi enviada. Agradecemos pelo contato.
+            </p>
+          )}
           <SiteContactForm />
         </div>
       </section>
