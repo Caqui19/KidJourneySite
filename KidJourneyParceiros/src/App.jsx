@@ -89,9 +89,21 @@ function App() {
   const [menuAberto, setMenuAberto] = useState(false);
   const fecharMenu = () => setMenuAberto(false);
   const [usuario, setUsuario] = useState(null);
+  const [mostrarBotaoTopo, setMostrarBotaoTopo] = useState(
+    () => window.scrollY > 400,
+  );
 
   useEffect(() => {
     return observarUsuario(setUsuario);
+  }, []);
+
+  useEffect(() => {
+    function atualizarBotaoTopo() {
+      setMostrarBotaoTopo(window.scrollY > 400);
+    }
+
+    window.addEventListener("scroll", atualizarBotaoTopo, { passive: true });
+    return () => window.removeEventListener("scroll", atualizarBotaoTopo);
   }, []);
 
   return (
@@ -154,6 +166,23 @@ function App() {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
+
+      {mostrarBotaoTopo && (
+        <button
+          className="botao-voltar-topo"
+          type="button"
+          aria-label="Voltar ao topo"
+          title="Voltar ao topo"
+          onClick={() =>
+            window.scrollTo({
+              top: 0,
+              behavior: "smooth",
+            })
+          }
+        >
+          <i className="fa-solid fa-arrow-up" aria-hidden="true"></i>
+        </button>
+      )}
 
       <footer>
         <div>

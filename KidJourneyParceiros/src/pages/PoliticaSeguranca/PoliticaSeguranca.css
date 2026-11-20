@@ -39,28 +39,6 @@
   line-height: 1.6;
 }
 
-.politica-aviso {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  margin: 20px 0;
-  padding: 10px 14px;
-  border: 1px solid var(--primary-color);
-  border-radius: 9px;
-  background: #f3f7e8;
-  color: var(--primary-color);
-  font-size: var(--regular-size);
-  font-weight: 600;
-}
-
-.politica-aviso::before {
-  content: "";
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: var(--primary-color);
-}
-
 .politica-conteudo section {
   min-width: 0;
   margin-top: 20px;
@@ -78,6 +56,22 @@
   overflow-wrap: anywhere;
 }
 
+.politica-conteudo section p + p {
+  margin-top: 12px;
+}
+
+.politica-conteudo section ul {
+  margin: 12px 0 0;
+  padding-left: 24px;
+  color: var(--text-color);
+  font-size: var(--big-size);
+  line-height: 1.6;
+}
+
+.politica-conteudo section li + li {
+  margin-top: 6px;
+}
+
 .politica-conteudo section a {
   display: inline-block;
   margin-top: 8px;
@@ -92,6 +86,10 @@
   margin: 0;
 }
 
+.politica-conteudo section a:hover {
+  filter: brightness(0.7);
+}
+
 .politica-email {
   color: var(--primary-color);
 }
@@ -100,11 +98,6 @@
   margin-top: 20px;
   color: var(--text-color);
   font-size: var(--regular-size);
-}
-
-.divisor-links {
-  margin-inline: 10px;
-  color: var(--primary-color);
 }
 
 @media (max-width: 560px) {
@@ -116,7 +109,4 @@
     padding: 16px;
   }
 
-  .divisor-links {
-    display: none;
-  }
 }

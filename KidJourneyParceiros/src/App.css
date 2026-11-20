@@ -13,3 +13,36 @@ main {
   }
 }
 
+.botao-voltar-topo {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 998;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--primary-color);
+  border-radius: 50%;
+  background: var(--secondary-color);
+  color: var(--primary-color);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 18%);
+  font-size: var(--big-size);
+  cursor: pointer;
+}
+
+.botao-voltar-topo:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 3px;
+}
+
+@media (max-width: 560px) {
+  .botao-voltar-topo {
+    right: 16px;
+    bottom: 18px;
+    width: 44px;
+    height: 44px;
+  }
+}
+
